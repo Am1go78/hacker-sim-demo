@@ -1,0 +1,21 @@
+{
+ "name": "Hacker Sim",
+ "short_name": "Hacker Sim",
+ "start_url": "./",
+ "scope": "./",
+ "display": "fullscreen",
+ "display_override": [
+  "fullscreen",
+  "standalone"
+ ],
+ "orientation": "any",
+ "background_color": "#0b0824",
+ "theme_color": "#0b0824",
+ "icons": [
+  {
+   "src": "icon.png",
+   "sizes": "180x180",
+   "type": "image/png"
+  }
+ ]
+}

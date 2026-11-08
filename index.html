@@ -9,6 +9,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Hacker Sim">
 <meta name="theme-color" content="#0b0824">
+<link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="icon.png">
 <link rel="icon" href="icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -228,6 +229,9 @@ body { font-size: 14px; }
 	.app { padding-top: max(8px, env(safe-area-inset-top, 0px)); padding-bottom: max(8px, env(safe-area-inset-bottom, 0px)); }
 }
 [hidden] { display: none !important; }
+html { background: #0b0824; height: 100%; }
+body { min-height: 100%; min-height: 100dvh; }
+.app { min-height: 100vh; min-height: 100dvh; justify-content: center; }
 </style>
 </head>
 <body>
@@ -389,6 +393,14 @@ body { font-size: 14px; }
 		tick5: () => tone(440, 0.05, "square", 0.03),
 	};
 	const buzz = (ms) => { try { navigator.vibrate && navigator.vibrate(ms); } catch (e) {} };
+	function goFullscreen() {
+		try {
+			const el = document.documentElement;
+			if (document.fullscreenElement || document.webkitFullscreenElement) return;
+			const req = el.requestFullscreen || el.webkitRequestFullscreen;
+			if (req) { const r = req.call(el, { navigationUI: "hide" }); if (r && r.catch) r.catch(() => {}); }
+		} catch (e) {}
+	}
 	async function keepAwake() { try { if (navigator.wakeLock) await navigator.wakeLock.request("screen"); } catch (e) {} }
 
 	/* ---------- shared ---------- */
@@ -627,7 +639,7 @@ body { font-size: 14px; }
 	}
 
 	/* ---------- wiring ---------- */
-	$("go").addEventListener("click", () => { sfx.start(); buzz(30); keepAwake(); startedAt = performance.now(); crack(); });
+	$("go").addEventListener("click", () => { goFullscreen(); sfx.start(); buzz(30); keepAwake(); startedAt = performance.now(); crack(); });
 	$("again").addEventListener("click", () => { setCash(opts.cash, false); startScreen(); });
 	document.addEventListener("keydown", (e) => {
 		if (!$("s-crack").hidden && /^[1-4]$/.test(e.key)) window.__press && window.__press(+e.key - 1);
